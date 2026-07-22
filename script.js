@@ -3,6 +3,11 @@ const scoreDisplay = document.querySelector('#score');
 const timeLeftDisplay = document.querySelector('#time-left');
 const startButton = document.querySelector('#start-btn');
 
+// Elementos del cartel (modal)
+const bonusModal = document.querySelector('#bonus-modal');
+const bonusText = document.querySelector('#bonus-text');
+const closeModalBtn = document.querySelector('#close-modal-btn');
+
 let score = 0;
 let currentTime = 30;
 let activeHole = null;
@@ -11,7 +16,15 @@ let moleTimeout = null;
 let countDownTimerId = null;
 let isPlaying = false;
 
-// Función para obtener un hoyo aleatorio (evitando que repita el mismo inmediatamente)
+// Control de hitos de bonos
+const bonusMilestones = [
+    { target: 3, text: '¡Bono de 50%!' },
+    { target: 6, text: '¡Bono de 100%!' },
+    { target: 9, text: '¡Bono de 150%!' },
+    { target: 12, text: '¡Bono de 200%!' }
+];
+let currentBonusIndex = 0;
+
 function getRandomHole() {
     const index = Math.floor(Math.random() * holes.length);
     const hole = holes[index];
@@ -21,12 +34,10 @@ function getRandomHole() {
     return hole;
 }
 
-// Función para obtener un tiempo aleatorio visible (ej. entre 1500ms y 2500ms)
 function getRandomTime(min, max) {
     return Math.round(Math.random() * (max - min) + min);
 }
 
-// Hace que aparezca un topo y desaparezca tras unos segundos
 function popUpMole() {
     if (!isPlaying) return;
 
@@ -34,37 +45,63 @@ function popUpMole() {
     activeHole = hole;
     hole.classList.add('mole');
 
-    // Tiempo que el topo permanece visible (entre 1.5 y 2.5 segundos)
     const displayTime = getRandomTime(1500, 2500);
 
-    // Oculta al topo tras cumplirse el tiempo
     moleTimeout = setTimeout(() => {
         hole.classList.remove('mole');
         activeHole = null;
 
-        // Si el juego sigue activo, hace aparecer al siguiente topo tras un breve descanso
         if (isPlaying) {
             gameTimeout = setTimeout(popUpMole, 500);
         }
     }, displayTime);
 }
 
-// Lógica para detectar los clics
+// Muestra el cartel emergente y pausa temporalmente la aparición de topos
+function showBonusCartel(message, isFinal = false) {
+    bonusText.textContent = message;
+    bonusModal.classList.remove('hidden');
+
+    // Si es el último bono (200%), pausamos el reloj para finalizar
+    if (isFinal) {
+        clearInterval(countDownTimerId);
+        clearTimeout(moleTimeout);
+        clearTimeout(gameTimeout);
+        holes.forEach(hole => hole.classList.remove('mole'));
+    }
+}
+
+closeModalBtn.addEventListener('click', () => {
+    bonusModal.classList.add('hidden');
+
+    // Si ya completó los 12 topos (último bono), termina el juego definitivamente
+    if (score >= 12) {
+        endGame(true);
+    }
+});
+
+// Lógica para detectar los golpes
 holes.forEach(hole => {
     hole.addEventListener('click', () => {
-        // Verifica si hizo clic en el hoyo con el topo activo
-        if (hole === activeHole) {
+        if (hole === activeHole && isPlaying) {
             score++;
             scoreDisplay.textContent = score;
 
-            // Quita al topo inmediatamente al ser golpeado
             hole.classList.remove('mole');
             activeHole = null;
-
-            // Cancela el temporizador para que no intente ocultarlo de nuevo
             clearTimeout(moleTimeout);
 
-            // Hace aparecer el siguiente topo
+            // Verificar si alcanzó un hito de bono
+            if (currentBonusIndex < bonusMilestones.length && score === bonusMilestones[currentBonusIndex].target) {
+                const milestone = bonusMilestones[currentBonusIndex];
+                currentBonusIndex++;
+
+                const isFinal = currentBonusIndex === bonusMilestones.length;
+                showBonusCartel(milestone.text, isFinal);
+
+                if (isFinal) return; // Si es el último bono, no genera más topos
+            }
+
             if (isPlaying) {
                 gameTimeout = setTimeout(popUpMole, 400);
             }
@@ -72,18 +109,16 @@ holes.forEach(hole => {
     });
 });
 
-// Contador regresivo
 function countDown() {
     currentTime--;
     timeLeftDisplay.textContent = currentTime;
 
     if (currentTime === 0) {
-        endGame();
+        endGame(false);
     }
 }
 
-// Finaliza el juego y limpia los temporizadores
-function endGame() {
+function endGame(completedAllBonuses) {
     isPlaying = false;
     clearInterval(countDownTimerId);
     clearTimeout(moleTimeout);
@@ -92,19 +127,25 @@ function endGame() {
     holes.forEach(hole => hole.classList.remove('mole'));
     activeHole = null;
 
-    alert('¡Tiempo agotado! Tu puntuación final es: ' + score);
+    if (completedAllBonuses) {
+        alert('¡Felicitaciones! Completaste todos los bonos alcanzando el 200%. Tu puntuación final es: ' + score);
+    } else {
+        alert('¡Tiempo agotado! Tu puntuación final es: ' + score);
+    }
+
     startButton.disabled = false;
 }
 
-// Inicia el juego
 startButton.addEventListener('click', () => {
     score = 0;
     currentTime = 30;
+    currentBonusIndex = 0;
     isPlaying = true;
 
     scoreDisplay.textContent = score;
     timeLeftDisplay.textContent = currentTime;
     startButton.disabled = true;
+    bonusModal.classList.add('hidden');
 
     popUpMole();
     countDownTimerId = setInterval(countDown, 1000);
