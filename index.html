@@ -3,10 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de los Topos</title>
+    <title>Juego de los Topos - Casino Atenea</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Pantalla de Carga (Splash Screen) -->
+    <div id="loader-screen">
+        <div class="loader-content">
+            <img src="logo.png" alt="Casino Atenea" class="loader-logo">
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+            <p id="loader-text">Cargando juego... 0%</p>
+        </div>
+    </div>
+
     <h1>¡Golpea al Topo!</h1>
     <h2>Puntuación: <span id="score">0</span></h2>
     <h2>Tiempo restante: <span id="time-left">15</span>s</h2>
