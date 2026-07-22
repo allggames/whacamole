@@ -1,3 +1,29 @@
+// --- LÓGICA PANTALLA DE CARGA ---
+window.addEventListener('DOMContentLoaded', () => {
+    const loaderScreen = document.querySelector('#loader-screen');
+    const progressBar = document.querySelector('#progress-bar');
+    const loaderText = document.querySelector('#loader-text');
+
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.floor(Math.random() * 12) + 5; // Incremento aleatorio fluido
+
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+
+            // Oculta la pantalla de carga pasados unos ms cuando llega al 100%
+            setTimeout(() => {
+                loaderScreen.classList.add('fade-out');
+            }, 400);
+        }
+
+        progressBar.style.width = `${progress}%`;
+        loaderText.textContent = `Cargando juego... ${progress}%`;
+    }, 120);
+});
+
+// --- RESTO DEL CÓDIGO DE TU JUEGO ---
 const holes = document.querySelectorAll('.hole');
 const scoreDisplay = document.querySelector('#score');
 const timeLeftDisplay = document.querySelector('#time-left');
@@ -12,7 +38,7 @@ const finalMessage = document.querySelector('#final-message');
 const finalDatetime = document.querySelector('#final-datetime');
 
 let score = 0;
-let currentTime = 15; // 15 segundos de juego
+let currentTime = 15;
 let activeHole = null;
 let gameTimeout = null;
 let moleTimeout = null;
@@ -20,7 +46,6 @@ let countDownTimerId = null;
 let toastTimeout = null;
 let isPlaying = false;
 
-// Configuración de bonos según topos golpeados
 const bonusMilestones = [
     { target: 3, percent: 50, text: '¡Bono de 50%!' },
     { target: 6, percent: 100, text: '¡Bono de 100%!' },
@@ -61,7 +86,6 @@ function popUpMole() {
     }, displayTime);
 }
 
-// Muestra el aviso rápido flotante
 function showBonusNotice(message) {
     bonusText.textContent = message;
     bonusToast.classList.remove('hidden');
@@ -72,7 +96,6 @@ function showBonusNotice(message) {
     }, 1200);
 }
 
-// Calcula qué bono alcanzó el jugador hasta el momento
 function getAchievedBonusPercentage() {
     if (score >= 12) return 200;
     if (score >= 9) return 150;
@@ -81,7 +104,6 @@ function getAchievedBonusPercentage() {
     return 0;
 }
 
-// Lógica para registrar clics
 holes.forEach(hole => {
     hole.addEventListener('click', () => {
         if (hole === activeHole && isPlaying) {
@@ -92,13 +114,11 @@ holes.forEach(hole => {
             activeHole = null;
             clearTimeout(moleTimeout);
 
-            // Verificar si corresponde notificación de bono
             if (currentBonusIndex < bonusMilestones.length && score === bonusMilestones[currentBonusIndex].target) {
                 const milestone = bonusMilestones[currentBonusIndex];
                 showBonusNotice(milestone.text);
                 currentBonusIndex++;
 
-                // Si alcanzó el máximo bono (200%), termina el juego al instante
                 if (milestone.percent === 200) {
                     endGame();
                     return;
@@ -130,10 +150,8 @@ function endGame() {
     holes.forEach(hole => hole.classList.remove('mole'));
     activeHole = null;
 
-    // Obtener porcentaje de bono alcanzado
     const achievedBonus = getAchievedBonusPercentage();
 
-    // Obtener la fecha y hora actual formateada
     const now = new Date();
     const formattedDate = now.toLocaleDateString('es-AR', {
         day: '2-digit',
@@ -146,7 +164,6 @@ function endGame() {
         second: '2-digit'
     });
 
-    // Configurar y mostrar el cartel final
     finalMessage.textContent = `Felicitaciones te ganaste un bono de ${achievedBonus}%`;
     finalDatetime.textContent = `Fecha: ${formattedDate} - Hora: ${formattedTime}`;
     finalModal.classList.remove('hidden');
