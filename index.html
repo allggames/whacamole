@@ -9,7 +9,7 @@
 <body>
     <h1>¡Golpea al Topo!</h1>
     <h2>Puntuación: <span id="score">0</span></h2>
-    <h2>Tiempo restante: <span id="time-left">30</span>s</h2>
+    <h2>Tiempo restante: <span id="time-left">15</span>s</h2>
 
     <div class="grid">
         <div class="hole" id="1"></div>
@@ -25,10 +25,20 @@
 
     <button id="start-btn">Iniciar Juego</button>
 
-<!-- Cartel de Notificación Flotante -->
-<div id="bonus-toast" class="toast hidden">
-    <span id="bonus-text">¡Bono de 50%!</span>
-</div>
+    <!-- Avisos de bono durante la partida -->
+    <div id="bonus-toast" class="toast hidden">
+        <span id="bonus-text">¡Bono de 50%!</span>
+    </div>
+
+    <!-- Cartel Final de Recompensa -->
+    <div id="final-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="final-title">¡FELICITACIONES!</h2>
+            <p id="final-message">Te ganaste un bono del 0%</p>
+            <p id="final-datetime" class="datetime-text"></p>
+            <a id="claim-btn" href="https://casinoatenea.club/" target="_blank" rel="noopener noreferrer">Captura y reclamá</a>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
