@@ -1,11 +1,21 @@
 body {
     font-family: 'Arial', sans-serif;
     text-align: center;
-    background: linear-gradient(135deg, #a1d683 0%, #7dbd5c 50%, #5e9c42 100%);
     color: #333;
     margin: 0;
     padding: 20px;
     user-select: none;
+
+    /* --- FONDO EFECTO CÉSPED CON PATRÓN Y DEGRADADO --- */
+    background-color: #558b2f;
+    background-image: 
+        /* Capa de textura de briznas de pasto */
+        radial-gradient(#7cb342 15%, transparent 16%),
+        radial-gradient(#689f38 15%, transparent 16%),
+        /* Sombra radial suave para darle profundidad al escenario */
+        radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.3) 100%);
+    background-size: 60px 60px, 60px 60px, 100% 100%;
+    background-position: 0 0, 30px 30px, 0 0;
 }
 
 h1, h2 {
