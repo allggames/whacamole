@@ -1,17 +1,16 @@
+/* Importación de fuente Lexend */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Lexend', sans-serif;
     text-align: center;
     color: white;
     margin: 0;
     padding: 20px;
     user-select: none;
 
-    /* --- FONDO DE CÉSPED REALISTA --- */
+    /* Fondo de Césped */
     background-color: #4a7c29;
     background-image: 
-        /* Sombras para dar profundidad al escenario */
-        radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%),
-        /* Imagen de textura de pasto */
+        radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%),
         url('https://images.unsplash.com/photo-1533460004989-acf017c28131?q=80&w=1000&auto=format&fit=crop');
     background-size: cover;
     background-position: center;
@@ -20,9 +19,10 @@ body {
 }
 
 h1, h2 {
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    color: #fff;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
     margin: 10px 0;
+    font-weight: 800;
 }
 
 .grid {
@@ -30,10 +30,10 @@ h1, h2 {
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 20px;
     max-width: 480px;
-    margin: 30px auto;
+    margin: 25px auto;
 }
 
-/* El hoyo de tierra */
+/* Hoyo de tierra */
 .hole {
     width: 140px;
     height: 140px;
@@ -47,7 +47,7 @@ h1, h2 {
     box-shadow: inset 0 12px 18px rgba(0,0,0,0.7);
 }
 
-/* --- EL TOPO DETALLADO (Ilustración SVG vectorizada en CSS) --- */
+/* El topo SVG */
 .hole.mole::after {
     content: '';
     display: block;
@@ -57,97 +57,82 @@ h1, h2 {
     bottom: 5px;
     left: 50%;
     transform: translateX(-50%);
-    
-    /* Ilustración completa del topo: cuerpo, ojitos, brillo, mofletes, hocico y patitas */
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110"><path d="M10 110 C10 40, 25 10, 50 10 C75 10, 90 40, 90 110 Z" fill="%238B5A2B"/><circle cx="35" cy="45" r="5" fill="%23000"/><circle cx="65" cy="45" r="5" fill="%23000"/><circle cx="33" cy="43" r="1.5" fill="%23FFF"/><circle cx="63" cy="43" r="1.5" fill="%23FFF"/><ellipse cx="28" cy="55" rx="6" ry="4" fill="%23FFB6C1" opacity="0.6"/><ellipse cx="72" cy="55" rx="6" ry="4" fill="%23FFB6C1" opacity="0.6"/><ellipse cx="50" cy="58" rx="14" ry="10" fill="%23E8C39E"/><ellipse cx="50" cy="53" rx="6" ry="4" fill="%23222"/><ellipse cx="25" cy="95" rx="10" ry="6" fill="%23E8C39E"/><ellipse cx="75" cy="95" rx="10" ry="6" fill="%23E8C39E"/></svg>');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center bottom;
-    
-    /* Animación para que asome desde abajo del hoyo */
     animation: popUp 0.2s ease-out forwards;
 }
 
 @keyframes popUp {
-    0% {
-        bottom: -110px;
-    }
-    100% {
-        bottom: 5px;
-    }
+    0% { bottom: -110px; }
+    100% { bottom: 5px; }
 }
 
-/* --- Botón --- */
-button {
-    padding: 15px 30px;
+/* Botón Iniciar Juego */
+button#start-btn {
+    padding: 15px 35px;
+    font-family: 'Lexend', sans-serif;
     font-size: 20px;
-    font-weight: bold;
-    background-color: #ffc107;
-    color: #333;
-    border: 4px solid #cc9a06;
+    font-weight: 800;
+    background: linear-gradient(180deg, #ffc107 0%, #ff8f00 100%);
+    color: #1a1a1a;
+    border: 3px solid #ffe082;
     border-radius: 50px;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 10px;
     text-transform: uppercase;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    transition: all 0.2s;
 }
 
-button:hover { 
-    background-color: #ffca2c;
+button#start-btn:hover { 
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
 }
 
-button:disabled {
-    background-color: #999;
-    border-color: #777;
-    color: #666;
+button#start-btn:disabled {
+    background: #666;
+    border-color: #444;
+    color: #aaa;
     cursor: not-allowed;
     box-shadow: none;
+    transform: none;
 }
 
-/* --- NOTIFICACIÓN FLOTANTE (TOAST) --- */
+/* Notificación flotante (Toast) */
 .toast {
     position: fixed;
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: #ffc107;
-    color: #333;
-    padding: 12px 25px;
+    background: linear-gradient(135deg, #2b1b0c 0%, #1a0f07 100%);
+    color: #ffc107;
+    padding: 12px 30px;
     border-radius: 30px;
-    border: 3px solid #cc9a06;
-    font-size: 22px;
-    font-weight: bold;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border: 2px solid #ffc107;
+    font-size: 20px;
+    font-weight: 800;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.8);
     z-index: 100;
-    pointer-events: none; /* Evita que bloquee los clics en los topos */
+    pointer-events: none;
     transition: all 0.3s ease;
-    animation: bounceIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 .toast.hidden {
     opacity: 0;
-    top: -50px;
+    top: -60px;
 }
 
-@keyframes bounceIn {
-    0% {
-        transform: translateX(-50%) scale(0.5);
-        opacity: 0;
-    }
-    100% {
-        transform: translateX(-50%) scale(1);
-        opacity: 1;
-    }
-}
-
-/* --- CARTEL FINAL DE RECOMPENSA (MODAL) --- */
+/* --- RECUADRO FINAL DE RECOMPENSA REDISEÑADO --- */
 .modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px); /* Efecto desfoque de fondo */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -159,67 +144,76 @@ button:disabled {
 }
 
 .modal-content {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 20px;
-    border: 5px solid #ffc107;
+    background: linear-gradient(145deg, #1f140e 0%, #0d0805 100%);
+    padding: 35px 25px;
+    border-radius: 24px;
+    border: 3px solid #ffc107;
     text-align: center;
-    max-width: 360px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-    animation: popIn 0.3s ease-out;
+    max-width: 380px;
+    width: 85%;
+    box-shadow: 0 0 35px rgba(255, 193, 7, 0.3), inset 0 0 15px rgba(255, 193, 7, 0.1);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .modal-content h2 {
-    color: #d84315;
-    margin-top: 0;
+    color: #ffc107;
     font-size: 28px;
-    text-shadow: none;
+    font-weight: 800;
+    margin-top: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
 }
 
-.modal-content p {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-    margin: 15px 0;
+.modal-content p#final-message {
+    font-size: 21px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 20px 0 10px 0;
+    line-height: 1.4;
 }
 
 .datetime-text {
-    font-size: 14px !important;
-    font-weight: normal !important;
-    color: #666 !important;
-    margin-bottom: 20px !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    color: #b3a28d !important;
+    margin-bottom: 25px !important;
 }
 
-/* Botón de Captura y Reclamá (Redirección) */
+/* Botón Captura y Reclamá */
 #claim-btn {
     display: inline-block;
-    padding: 14px 28px;
+    padding: 16px 32px;
     font-size: 18px;
-    font-weight: bold;
-    background-color: #28a745;
-    color: white;
+    font-weight: 800;
+    background: linear-gradient(180deg, #28a745 0%, #1e7e34 100%);
+    color: #ffffff;
     text-decoration: none;
     border-radius: 50px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: background-color 0.2s, transform 0.1s;
+    border: 2px solid #5cdb95;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    transition: all 0.2s;
+    text-transform: uppercase;
 }
 
 #claim-btn:hover {
-    background-color: #218838;
+    transform: scale(1.04);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.6);
 }
 
-#claim-btn:active {
-    transform: scale(0.98);
+@keyframes popIn {
+    0% { transform: scale(0.7); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
-/* --- PANTALLA DE CARGA (LOADER) --- */
+/* Estilos pantalla de carga */
 #loader-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #0b0b0d; /* Fondo oscuro acorde al logo */
+    background-color: #0b0b0d;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -238,7 +232,6 @@ button:disabled {
     flex-direction: column;
     align-items: center;
     max-width: 320px;
-    padding: 20px;
 }
 
 .loader-logo {
@@ -247,10 +240,8 @@ button:disabled {
     height: auto;
     margin-bottom: 25px;
     filter: drop-shadow(0 0 15px rgba(255, 193, 7, 0.4));
-    animation: pulse 2s infinite ease-in-out;
 }
 
-/* Barra de progreso */
 .progress-container {
     width: 100%;
     height: 16px;
@@ -258,7 +249,6 @@ button:disabled {
     border-radius: 10px;
     border: 2px solid #ffc107;
     overflow: hidden;
-    box-shadow: 0 0 10px rgba(0,0,0,0.8);
 }
 
 .progress-bar {
@@ -270,19 +260,7 @@ button:disabled {
 
 #loader-text {
     color: #ffc107;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 600;
     margin-top: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Animación sutil de respiración para el logo */
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.03);
-    }
 }
