@@ -3,9 +3,13 @@ body {
     text-align: center;
     background-color: #f0e6d2;
     color: #333;
+    margin: 0;
+    padding: 20px;
 }
 
-h1 { margin-top: 20px; }
+h1 { 
+    margin-top: 10px; 
+}
 
 .grid {
     display: grid;
@@ -15,37 +19,62 @@ h1 { margin-top: 20px; }
     margin: 20px auto;
 }
 
+/* El hoyo donde aparece el topo */
 .hole {
     width: 130px;
     height: 130px;
     background-color: #8B5A2B;
     border: 5px solid #5c3a1a;
     border-radius: 50%;
-    position: relative;
+    position: relative; /* Mantiene al topo dentro de sus límites */
     cursor: pointer;
-    overflow: hidden;
+    overflow: hidden;   /* Oculta cualquier parte del topo que sobresalga */
+    box-sizing: border-box;
 }
 
-/* Esta clase representará al topo cuando aparezca */
-.mole {
-    background-color: #a0522d;
-    border-radius: 50% 50% 0 0;
-    width: 90px;
+/* Cuando el hoyo tiene la clase .mole, mostramos el topo dentro */
+.hole.mole::after {
+    content: '';
+    display: block;
+    width: 80px;
     height: 90px;
+    background-color: #d2691e; /* Color del topo */
+    border: 3px solid #5c3a1a;
+    border-radius: 50% 50% 20% 20%;
     position: absolute;
     bottom: 0;
-    left: 20px;
-    box-shadow: inset -10px -10px 0px rgba(0,0,0,0.2);
+    left: 50%;
+    transform: translateX(-50%); /* Centra el topo horizontalmente dentro del hoyo */
+    box-shadow: inset -5px -5px 0px rgba(0, 0, 0, 0.2);
+    animation: pop 0.2s ease-out; /* Animación de aparición */
+}
+
+/* Animación opcional para que el topo suba suavemente */
+@keyframes pop {
+    from {
+        bottom: -90px;
+    }
+    to {
+        bottom: 0;
+    }
 }
 
 button {
-    padding: 10px 20px;
+    padding: 12px 24px;
     font-size: 18px;
     background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 50px;
     cursor: pointer;
+    margin-top: 10px;
 }
 
-button:hover { background-color: #45a049; }
+button:hover { 
+    background-color: #45a049; 
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
